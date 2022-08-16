@@ -3,12 +3,12 @@
 import argparse
 
 from core import InfoCombustible
-from model import CCAA, Provincia, Municipio
+from model import CCAA, Municipio, Provincia
 
 if __name__ == '__main__':
-    import sys
+    # import sys
 
-    sys.argv.extend(['-p', 'cadiz'])
+    # sys.argv.extend(['-p', 'cadiz'])
     parser = argparse.ArgumentParser()
     parser.add_argument('-C', '--carburantes', action='store_true', help='Listado de carburantes (Productos)')
     zona = parser.add_mutually_exclusive_group()
@@ -17,7 +17,7 @@ if __name__ == '__main__':
     zona.add_argument('-m', '--municipio', help='Filtro por Municipio.')
 
     args = parser.parse_args()
-    print(vars(args))
+    # print(vars(args))
     if args.carburantes:
         for p in InfoCombustible.get_productos():
             print(p.codigo, p.nombre, p.descripcion)

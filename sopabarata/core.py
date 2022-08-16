@@ -1,13 +1,12 @@
 # -*- coding:utf-8 -*-
 import sys
-from typing import List, Optional as Opt, Union as U, Dict
+from typing import Dict, List, Optional as Opt, Union as U
 
-import dateparser
 import requests
 
 import static as st
-from model import Producto, Municipio, Provincia, CCAA, EESS
-from utils import to_num, normalizar
+from model import CCAA, EESS, Municipio, Producto, Provincia
+from utils import normalizar, to_num
 
 Municipios = List[Municipio]
 Productos = List[Producto]
@@ -16,6 +15,7 @@ Autonomias = List[CCAA]
 Provincias = List[Provincia]
 
 
+# noinspection PyUnresolvedReferences
 class InfoCombustible:
     _municipios: Opt[Municipios] = None
     _productos: Opt[Productos] = None
@@ -95,8 +95,7 @@ class InfoCombustible:
     def get_productos(cls) -> Productos:
         """Obtiene datos sobre carburantes aceptados.
 
-        >>> productos = InfoCombustible().get_productos()
-        >>> all(isinstance(producto, Producto) and len(producto) for producto in productos)
+        >>> all(isinstance(p, Producto) for p in InfoCombustible().get_productos())
         True
 
         :return:
@@ -109,8 +108,7 @@ class InfoCombustible:
     def get_comunidades_autonomas(cls) -> Autonomias:
         """Obtiene los datos replacionados con las comunidades autónomas.
 
-        >>> ccaas = InfoCombustible().get_comunidades_autonomas()
-        >>> all(isinstance(ccaa, CCAA) and len(ccaa) for ccaa in ccaas)
+        >>> all(isinstance(ccaa, CCAA) and len(ccaa) for ccaa in InfoCombustible().get_comunidades_autonomas())
         True
 
         :return:
@@ -201,47 +199,19 @@ class InfoCombustible:
 
 
 if __name__ == '__main__':
+    import doctest
 
-    from xmltodict import parse
-    from requests import get
-
-
-    class Incidencia:
-        """Clase modelo para incidencia."""
-
-        def __init__(self, **kwargs):
-            self.tipo = kwargs.get("tipo")
-            self.autonomia = kwargs.get("autonomia", '').title()
-            self.provincia = kwargs.get("provincia").title()
-            self.matricula = kwargs.get("matricula")
-            self.causa = kwargs.get("causa")
-            self.poblacion = kwargs.get("poblacion").title()
-            self.fecha_inicial = dateparser.parse(kwargs.get("fechahora_ini"))
-            self.nivel = kwargs.get("nivel")
-            self.carretera = kwargs.get("carretera")
-            self.pto_km, _inicial = kwargs.get("pk_inicial")
-            self.pto_km_final = kwargs.get("pk_final")
-            self.sentido = kwargs.get("sentido")
-            self.hacia = kwargs.get("hacia")
-
-
-    def __repr__(self):
-        data = [f'{k}="{v}"' if isinstance(v, str) else f'{k}={v}' for k, v in vars(self).items() if k[0].islower()]
-        name = type(self).__name__
-        self_str = f'"{self}'
-        if len(data):
-            self_str = f'{self_str}", '
-        return f'{name}({self_str}{", ".join(data)})'.replace("{'", '{').replace("': ", ': ').replace(", '", ', ')
-
-
-    url = "http://www.dgt.es/incidencias.xml"
-    # [(i["autonomia"], i["poblacion"]) for i in parse(get(url).text)["raiz"]["incidencia"] if
-    response = get(url)
-    content = response.content.decode('UTF-8')
-    incidencias = parse(content)["raiz"]["incidencia"]
-    for x in [Incidencia(**i) for i in incidencias if i["autonomia"].lower() == "andalucia"]:
-        print(
-            f'[{x.fecha_inicial}] Alerta {(x.nivel if x.nivel == "VERDE" else (x.nivel[:-1] + "a")).lower()} de tipo {x.tipo.lower()} {f"causada por {x.causa.lower()}" if x.causa else ""}, ocurrida en {x.poblacion}, provincia de {x.provincia}, hacia {x.hacia} sentido {x.sentido}.')
+    doctest.testmod()
+    # print(InfoCombustible.buscar_por_nombre('albacete'))
+    # print(InfoCombustible.buscar_por_nombre('albacete', 'albacete'))
+    # print(InfoCombustible.buscar_por_nombre('albacete', 'albacete', 'albacete'))
+    # print(InfoCombustible.buscar_por_nombre('albacete', 'albacete', 'albacete', 'albacete'))
+    # print(InfoCombustible.buscar_por_nombre('albacete', 'albacete', 'albacete', 'albacete', 'albacete'))
+    # print(InfoCombustible.buscar_por_nombre('albacete', 'albacete', 'albacete', 'albacete', 'albacete', 'albacete'))
+    # print(InfoCombustible.buscar_por_nombre('albacete', 'albacete', 'albacete', 'albacete', 'albacete', 'albacete', 'albacete'))
+    # print(InfoCombustible.buscar_por_nombre('albacete', 'albacete', 'albacete', 'albacete', 'albacete', 'albacete', 'albacete', 'albacete'))
+    # print(InfoCombustible.buscar_por_nombre('albacete', 'albacete', 'albacete', 'albacete', 'albacete', 'albacete', 'albacete', 'albacete', 'albacete'))
+    # print(InfoCombustible.buscar_por_nombre('albacete', 'albacete', 'albacete', 'albacete', 'albacete
     # municipio = InfoCombustible.buscar_por_nombre('Los Barrios')
     # print(municipio[0])
     # d = InfoCombustible.get_estaciones_por_municio_y_producto(municipio[0].codigo, 15)

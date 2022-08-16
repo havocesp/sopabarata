@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='sopabarata',
-    version='0.1.0',
+    version='0.1.1',
     packages=[''],
     package_dir={'': 'sopabarata'},
     url='https://github.com/havocesp/sopabarata',

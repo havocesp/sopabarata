@@ -2,7 +2,7 @@
 import re
 
 
-def normalizar(text):
+def normalizar(text: str) -> str:
     """Normaliza un texto quitando acentos y cambiandolos por la letra mas parecida.
 
     >>> normalizar('espáña')
@@ -11,12 +11,7 @@ def normalizar(text):
     :param text: texto a normalizar.
     :return: texto normalizado.
     """
-    parts = list(text)
-    for good, bad in zip(list('aeiouunc'), list('áéíóúüñç')):
-        for idx, char in enumerate(list(text)):
-            if char.find(bad) >= 0:
-                parts[idx] = good
-    return ''.join(parts)
+    return f'{text}'.translate(str.maketrans('áéíóúüñç', 'aeiouunc'))
 
 
 def enmendar(nombre):

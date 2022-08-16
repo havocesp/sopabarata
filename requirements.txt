@@ -1,2 +1,2 @@
-dateparser
 requests
+python-dateutil
