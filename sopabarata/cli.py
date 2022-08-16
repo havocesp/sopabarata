@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 import argparse
+import sys
 
 from core import InfoCombustible
-from model import CCAA, Municipio, Provincia
+from model import CCAA, Provincia
 
 if __name__ == '__main__':
     # import sys
 
-    # sys.argv.extend(['-p', 'cadiz'])
+    sys.argv.extend(['-m', 'Puerto Del Rosario'])
     parser = argparse.ArgumentParser()
     parser.add_argument('-C', '--carburantes', action='store_true', help='Listado de carburantes (Productos)')
     zona = parser.add_mutually_exclusive_group()
@@ -18,6 +19,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     # print(vars(args))
+    # enmendar(args.provincia)
     if args.carburantes:
         for p in InfoCombustible.get_productos():
             print(p.codigo, p.nombre, p.descripcion)
@@ -32,11 +34,14 @@ if __name__ == '__main__':
         for r in results:
             if isinstance(r, Provincia):
                 for r in InfoCombustible.get_estaciones_por_provincia(r):
-                    print(r.precio, r.rotulo, r.localidad)
+                    print(r.precio_gasolina_95, r.rotulo, r.localidad)
                 break
     elif args.municipio:
         results = InfoCombustible.buscar_por_nombre(args.municipio)
-        for r in results:
-            if isinstance(r, Municipio):
-                print(InfoCombustible.get_estaciones_por_municipio(r))
-                break
+        if type(results).__name__ == 'Municipio':
+            for est in InfoCombustible.get_estaciones_por_municipio(results):
+                print(est.precio_gasolina_95, est.rotulo, est.localidad)
+        elif isinstance(results, list):
+            for r in results:
+                if type(r).__name__ == 'Municipio':
+                    print(InfoCombustible.get_estaciones_por_municipio(r))

@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 from typing import Text
 
-from utils import camel2snake, enmendar
+from utils import enmendar
 
 
 class Base(Text):
@@ -100,7 +100,7 @@ class EESS(Base):
         self.longitud = kwargs.get("Longitud (WGS84)")
         self.localidad = kwargs.get("Localidad")
         self.margen = kwargs.get("Margen")
-        self.precio = kwargs.get("PrecioProducto")
+        # self.precio = kwargs.get("PrecioProducto")
         self.remision = kwargs.get("Remisión")
         self.rotulo = kwargs.get("Rótulo")
         self.tipo_venta = kwargs.get("Tipo Venta")
@@ -111,50 +111,68 @@ class EESS(Base):
         self.precio_gases_licuados_del_petroleo = kwargs.get("Precio Gases licuados del petróleo")
         self.precio_gasoleo_a = kwargs.get("Precio Gasoleo A")
         self.precio_gasoleo_b = kwargs.get("Precio Gasoleo B")
-        self.precio_gasolina_95_proteccion = kwargs.get("Precio Gasolina 95 Protección")
-        self.precio_gasolina_98 = kwargs.get("Precio Gasolina  98")
+        self.precio_gasoleo_premium = kwargs.get("Precio Gasoleo Premium")
+        self.precio_gasolina_95_e5 = kwargs.get("Precio Gasolina 95 E5")
+        self.precio_gasolina_95_e10 = kwargs.get("Precio Gasolina 95 E10")
+        self.precio_gasolina_95_e5_premium = kwargs.get("Precio Gasolina 95 E5 Premium")
+        self.precio_gasolina_98_e5 = kwargs.get("Precio Gasolina 98 E5")
+        self.precio_gasolina_98_e10 = kwargs.get("Precio Gasolina 98 E10")
         self.precio_nuevo_gasoleo_a = kwargs.get("Precio Nuevo Gasoleo A")
         self.bio_etanol = kwargs.get("% BioEtanol")
         self.ester_metilico = kwargs.get("% Éster metílico")
 
+    @property
+    def precio_gasolina_95(self):
+        _result = str(self.precio_gasolina_95_e5 or self.precio_gasolina_95_e10 or self.precio_gasolina_95_e5_premium)
+        return float(_result.replace(',', '.')) if _result else -1.0
 
-if __name__ == '__main__':
-    import pyperclip as clip
-    import json
+    @property
+    def precio_gasolina_98(self):
+        _result = str(self.precio_gasolina_98_e5 or self.precio_gasolina_98_e10)
+        return float(_result.replace(',', '.')) if _result else -1.0
 
-    copy, paste = clip.determine_clipboard()
-    clip_content = paste().strip(' ,\n[]\r\t')
-    if clip_content is None or not len(clip_content):
-        clip_content = '{}'
-    try:
-        params = json.loads(clip_content.replace("'", '"'))
-        params = list(params)
-        class_name = 'Incidencia'
-        ident = ' ' * 12
+    @property
+    def precio_gasoleo(self):
+        _result = str(self.precio_gasoleo_a or self.precio_gasoleo_b)
+        return float(_result.replace(',', '.')) if _result else -1.0
 
-        code = f"""
-    class {class_name}(Base):
-        \"\"\"Clase modelo para {class_name.lower()}.\"\"\"
-
-        def __init__(self):
-            super().__init__(**locals())
-"""
-
-        if len(params):
-            temp = list(params)
-            new_params = list()
-            for p in temp:
-                parts = camel2snake(p).split('_')
-                parts = '_'.join(s for s in parts if s != class_name.lower())
-                if len(parts):
-                    new_params.append(parts if parts != 'id' else 'codigo')
-                    code = code.replace('self', f'self, **kwargs')
-                    for new_param, param in zip(new_params, params):
-                        code += f'{ident}self.{new_param.lower()} = kwargs.get("{param}")\n'
-
-                    copy(code)
-                    print(code)
-    except json.JSONDecodeError as err:
-        print(str(err))
-        print(' - No se detecto datos en formato JSON en el portapeles.')
-        exit(1)
+# if __name__ == '__main__':
+#     import pyperclip as clip
+#     import json
+#
+#     copy, paste = clip.determine_clipboard()
+#     clip_content = paste().strip(' ,\n[]\r\t')
+#     if clip_content is None or not len(clip_content):
+#         clip_content = '{}'
+#     try:
+#         params = json.loads(clip_content.replace("'", '"'))
+#         params = list(params)
+#         class_name = 'Incidencia'
+#         ident = ' ' * 12
+#
+#         code = f"""
+#     class {class_name}(Base):
+#         \"\"\"Clase modelo para {class_name.lower()}.\"\"\"
+#
+#         def __init__(self):
+#             super().__init__(**locals())
+# """
+#
+#         if len(params):
+#             temp = list(params)
+#             new_params = list()
+#             for p in temp:
+#                 parts = camel2snake(p).split('_')
+#                 parts = '_'.join(s for s in parts if s != class_name.lower())
+#                 if len(parts):
+#                     new_params.append(parts if parts != 'id' else 'codigo')
+#                     code = code.replace('self', f'self, **kwargs')
+#                     for new_param, param in zip(new_params, params):
+#                         code += f'{ident}self.{new_param.lower()} = kwargs.get("{param}")\n'
+#
+#                     copy(code)
+#                     print(code)
+#     except json.JSONDecodeError as err:
+#         print(str(err))
+#         print(' - No se detecto datos en formato JSON en el portapeles.')
+#         exit(1)

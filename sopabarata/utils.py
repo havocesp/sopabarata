@@ -14,9 +14,9 @@ def normalizar(text: str) -> str:
     return f'{text}'.translate(str.maketrans('áéíóúüñç', 'aeiouunc'))
 
 
-def enmendar(nombre):
+def enmendar(nombre: str) -> str:
     articulos = ' (LA)', ' (La)', ' (El)', ' (Los)', ' (Las), ', ', (LOS)', ', (LAS)'
-    if isinstance(nombre or 0, str):
+    if isinstance(nombre, str):
         nombre = nombre.title()
         if any(a in nombre for a in articulos):
             for a in articulos:
