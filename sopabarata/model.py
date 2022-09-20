@@ -53,8 +53,8 @@ class Base(Text):
 class Producto(Base):
     """Clase modelo para producto."""
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.descripcion = kwargs.get('NombreProducto')
 
 

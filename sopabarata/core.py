@@ -206,38 +206,3 @@ class InfoCombustible:
         else:
             return Productos(*set(resultados))
 
-
-if __name__ == '__main__':
-    import doctest
-
-    doctest.testmod()
-    # print(InfoCombustible.buscar_por_nombre('albacete'))
-    # print(InfoCombustible.buscar_por_nombre('albacete', 'albacete'))
-    # print(InfoCombustible.buscar_por_nombre('albacete', 'albacete', 'albacete'))
-    # print(InfoCombustible.buscar_por_nombre('albacete', 'albacete', 'albacete', 'albacete'))
-    # print(InfoCombustible.buscar_por_nombre('albacete', 'albacete', 'albacete', 'albacete', 'albacete'))
-    # print(InfoCombustible.buscar_por_nombre('albacete', 'albacete', 'albacete', 'albacete', 'albacete', 'albacete'))
-    # print(InfoCombustible.buscar_por_nombre('albacete', 'albacete', 'albacete', 'albacete', 'albacete', 'albacete', 'albacete'))
-    # print(InfoCombustible.buscar_por_nombre('albacete', 'albacete', 'albacete', 'albacete', 'albacete', 'albacete', 'albacete', 'albacete'))
-    # print(InfoCombustible.buscar_por_nombre('albacete', 'albacete', 'albacete', 'albacete', 'albacete', 'albacete', 'albacete', 'albacete', 'albacete'))
-    # print(InfoCombustible.buscar_por_nombre('albacete', 'albacete', 'albacete', 'albacete', 'albacete
-    # municipio = InfoCombustible.buscar_por_nombre('Los Barrios')
-    # print(municipio[0])
-    # d = InfoCombustible.get_estaciones_por_municio_y_producto(municipio[0].codigo, 15)
-    # pprint(d)
-    # data = InfoCombustible.get_comunidades_autonomas()
-    # data = InfoCombustible.buscar_ccaa_por_nombre('Canarias')
-    # data = InfoCombustible.buscar_por_codigo(5, 67, 4005)
-    # data = InfoCombustible.buscar_por_nombre('Puerto Del Rosario')
-    # data = InfoCombustible.get_productos()
-    # productos = InfoCombustible.buscar_producto('GPR')
-    # for d in data:
-    #     print(d.codigo, d, d.descripcion)
-    # data = InfoCombustible.get_estaciones_por_producto(1)
-
-    # # data = InfoCombustible.get_provincias(5)
-    # if isinstance(data, list):
-    #     pprint(list(map(str, data)))
-    # else:
-    #     print(data)
-    # productos = infogas.get_productos()

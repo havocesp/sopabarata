@@ -1,23 +1,12 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 import argparse
-import sys
 
 from core import InfoCombustible
 from model import CCAA, Provincia
 
-if __name__ == '__main__':
-    # import sys
 
-    sys.argv.extend(['-m', 'Puerto Del Rosario'])
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-C', '--carburantes', action='store_true', help='Listado de carburantes (Productos)')
-    zona = parser.add_mutually_exclusive_group()
-    zona.add_argument('-c', '--ccaa', help='Filtro por Comunidad Autónoma.')
-    zona.add_argument('-p', '--provincia', help='Filtro por Provincia.')
-    zona.add_argument('-m', '--municipio', help='Filtro por Municipio.')
-
-    args = parser.parse_args()
+def main(args):
     # print(vars(args))
     # enmendar(args.provincia)
     if args.carburantes:
@@ -45,3 +34,22 @@ if __name__ == '__main__':
             for r in results:
                 if type(r).__name__ == 'Municipio':
                     print(InfoCombustible.get_estaciones_por_municipio(r))
+
+
+def run():
+    # import sys
+    # sys.argv.extend(['-m', 'Puerto Del Rosario'])
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-C', '--carburantes', action='store_true', help='Listado de carburantes (Productos)')
+    zona = parser.add_mutually_exclusive_group()
+    zona.add_argument('-c', '--ccaa', help='Filtro por Comunidad Autónoma.')
+    zona.add_argument('-p', '--provincia', help='Filtro por Provincia.')
+    zona.add_argument('-m', '--municipio', help='Filtro por Municipio.')
+
+    main(parser.parse_args())
+
+
+if __name__ == '__main__':
+    run()
+sa
+sa
