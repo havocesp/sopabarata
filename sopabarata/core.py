@@ -2,11 +2,10 @@
 import sys
 from typing import Dict, List, NewType, Optional as Opt, Union as U
 
-import requests
-
 import sopabarata.static as st
 from sopabarata.model import CCAA, EESS, Municipio, Producto, Provincia
 from sopabarata.utils import enmendar, normalizar, to_num
+from security import safe_requests
 
 _MunicipiosList = List[U[Municipio, int]]
 _Productos = List[U[Producto, int]]
@@ -30,7 +29,7 @@ class InfoCombustible:
     def _consulta(cls, url) -> U[List, Dict]:
         datos = None
         try:
-            respuesta = requests.get(url)
+            respuesta = safe_requests.get(url)
             datos = respuesta.json()
         except Exception as err:
             print(f' - [ERROR] {err}', file=sys.stderr)

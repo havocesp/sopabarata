@@ -1,2 +1,3 @@
 requests
 python-dateutil
+security~=1.2.0
